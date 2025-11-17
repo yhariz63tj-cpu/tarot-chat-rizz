@@ -1,0 +1,70 @@
+import random
+import streamlit as st
+
+# Configuración de la página
+st.set_page_config(page_title="Tarot Chat", page_icon="🔮")
+
+st.title("🔮 Tarot Chat — Lectura de 3 Cartas")
+st.write("Haz tu pregunta o escribe el área que quieras explorar (amor, energía, estudios, etc.) y te daré una lectura intuitiva de 3 cartas. ✨")
+
+# Tarot con significados base
+tarot = {
+    "El Loco": "nuevos comienzos, valentía, energía fresca",
+    "El Mago": "manifestación, poder personal, claridad",
+    "La Sacerdotisa": "intuición, misterio, guía espiritual",
+    "La Emperatriz": "creatividad, amor propio, abundancia",
+    "El Emperador": "estructura, orden, límites",
+    "Los Enamorados": "decisiones del corazón, conexión profunda",
+    "El Carro": "avance, determinación, enfoque",
+    "La Fuerza": "compasión, autocontrol, valentía interna",
+    "El Ermitaño": "introspección, búsqueda interior, reflexión",
+    "La Rueda de la Fortuna": "cambios, destino, ciclos que giran",
+    "La Justicia": "equilibrio, karma, claridad moral",
+    "El Colgado": "pausa, rendición, nueva perspectiva",
+    "La Muerte": "transformación profunda, renacer",
+    "La Templanza": "sanación, armonía, paciencia",
+    "El Diablo": "apegos, tentaciones, patrones tóxicos",
+    "La Torre": "verdades repentinas, liberación",
+    "La Estrella": "esperanza, guía, claridad espiritual",
+    "La Luna": "intuición, emociones profundas, dudas",
+    "El Sol": "éxito, vitalidad, alegría",
+    "El Juicio": "despertar, decisiones finales",
+    "El Mundo": "cierre de ciclo, logro, plenitud"
+}
+
+def interpretar(carta, posición, pregunta):
+    base = tarot[carta]
+
+    if posición == "pasado":
+        return f"**{carta}** en el *pasado*: vienes de una etapa marcada por {base}, lo cual influye en tu situación actual respecto a **{pregunta}**."
+    
+    if posición == "presente":
+        return f"**{carta}** en el *presente*: ahora estás atravesando energía de {base}, que es clave en tu situación sobre **{pregunta}**."
+    
+    if posición == "futuro":
+        return f"**{carta}** en el *futuro*: pronto se manifestará {base}, mostrando hacia dónde se dirige tu camino en **{pregunta}**."
+
+def mensaje_final(c1, c2, c3, pregunta):
+    return (f"✨ **Mensaje final:** Tu lectura sobre **{pregunta}** muestra un viaje que comienza "
+            f"con la energía de *{c1}*, se mueve a través de *{c2}* y te conduce hacia *{c3}*. "
+            f"Todo indica un proceso natural de evolución. Confía en los cambios y permanece abierta "
+            f"a lo que el universo está alineando para ti.")
+
+# Entrada del usuario (chat)
+pregunta = st.text_input("💬 Pregunta o tema:")
+
+if st.button("Leer mi tarot ✨"):
+    if pregunta.strip() == "":
+        st.warning("Escribe una pregunta o un área de vida ❤️")
+    else:
+        cartas = random.sample(list(tarot.keys()), 3)
+        pasado, presente, futuro = cartas
+
+        st.subheader("🔮 Tu lectura:")
+
+        st.write(interpretar(pasado, "pasado", pregunta))
+        st.write(interpretar(presente, "presente", pregunta))
+        st.write(interpretar(futuro, "futuro", pregunta))
+
+        st.markdown("---")
+        st.success(mensaje_final(pasado, presente, futuro, pregunta))
